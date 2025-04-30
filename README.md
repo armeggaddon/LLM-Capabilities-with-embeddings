@@ -1,4 +1,4 @@
-# Knowledge-Graph-using-neo4j
-This helps to showcase your data as entities, relationships with organizing principle for better interpretation.
+# LLM Capabilities using LangChain
+This repository showcases the power of LangChain framework using LLMs
 
 COMING SOON..... :)
