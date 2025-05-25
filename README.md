@@ -1,4 +1,4 @@
-# LLM Capabilities using LangChain
-This repository showcases the power of LangChain framework using LLMs
+# LLM Capabilities with embeddings
+This repository showcases the power of LLM with embeddings
 
 COMING SOON..... :)
