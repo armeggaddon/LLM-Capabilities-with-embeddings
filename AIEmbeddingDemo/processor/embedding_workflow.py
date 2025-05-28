@@ -6,12 +6,18 @@ from pathlib import Path
 from processor.file_mgmt import file_processor
 from utils.model_config import azure_openai_llm 
 from utils.model_config import azure_openai_embed_model
+from llama_index.core.base.llms.types import ChatMessage
 from llama_index.vector_stores.chroma import ChromaVectorStore
 from llama_index.core import VectorStoreIndex, SimpleDirectoryReader
 from llama_index.core.storage.storage_context import StorageContext
 from config import CONSTS
 from utils.repository import repo_path_for_user
 from utils.constants import ADMIN, embed_files, de_embed_files
+from llama_index.core.memory.chat_memory_buffer import ChatMemoryBuffer
+from utils.support import extract_system_message
+from openai import BadRequestError
+from processor.utility import msg_trimmer
+import httpcore
 
 logger = logging.getLogger(__name__)
 
@@ -24,7 +30,7 @@ Settings.embed_model = azure_openai_embed_model
 def _enable_vector_store(collection_name, action_):
     
     vs_client = chromadb.HttpClient(host=CONSTS.chroma_host,
-                                    port=CONSTS.chroma_port)
+                                    port=int(CONSTS.chroma_port))
     chroma_collection = getattr(vs_client, action_)(collection_name)
     vector_store = ChromaVectorStore(chroma_collection=chroma_collection)  
     return vector_store 
@@ -83,3 +89,36 @@ def delete_embeddings(collection_name, file_name_to_delete):
     except Exception as e:
         logger.error("Unable to delete the document {} from index".format(file_name_to_delete) , str(e))
         raise
+
+def emb_query_workflow(module, user_input, chat_history, collection_name, session_id):
+    
+    try:
+        chat_message_hist = []
+
+        if chat_history:
+            for conv in chat_history:
+                chat_role = conv['role']
+                chat_content = conv['content']
+                chat_message_hist.append(ChatMessage(role=chat_role, content=chat_content))
+        else:
+            chat_message_hist = None
+            
+        memory = ChatMemoryBuffer.from_defaults(chat_history=chat_message_hist, token_limit=int(CONSTS.token_limit))
+        sp = extract_system_message(module)        
+        index_ = _enable_index(collection_name)
+        chat_engine = index_.as_chat_engine(chat_mode="context",
+            memory=memory,
+            system_prompt=sp
+        )
+        response_ = chat_engine.chat(user_input)
+        return response_.response
+           
+    except BadRequestError as e:
+            logger.warning(e)
+            chat_response =  msg_trimmer(module, user_input, chat_history, collection_name, session_id)
+            logger.info("bot_response_br: " + chat_response)
+            return chat_response
+    except ValueError as e:
+        logger.error("Probably requested Collection is not found, Check the Chroma DB ")
+        raise
+              

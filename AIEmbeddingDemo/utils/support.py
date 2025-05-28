@@ -38,9 +38,8 @@ def write_system_message(user_id, module, sys_msg):
             os.rename(sys_file, new_sys_file)
             
         with open(sys_file, "w") as file_:
-        # Writing data to a file
             file_.write(sys_msg)
-            # extract_system_message(module).cache_clear()  # temp provision
+            
     
         return SYS_MSG_LOG.format(module)
     except Exception as e:
@@ -48,17 +47,21 @@ def write_system_message(user_id, module, sys_msg):
         raise
 
     
-@lru_cache(typed=True)  # temp provision
+@lru_cache(typed=True)
 def extract_system_message(module):
     
-    sys_msg = SYSTEM_MSG_CMN
-    
-    module_file_name = module + '.txt'
-    user_repo_path = repo_path_for_user(ADMIN)
-    sys_file = os.path.join(user_repo_path, sys_msg_dir, module_file_name)
-    
-    if Path(sys_file).is_file():
-        with open(sys_file, 'r') as sys_file: 
-            sys_msg = sys_file.read()
-    
-    return sys_msg     
+    try:
+        sys_msg = SYSTEM_MSG_CMN
+        
+        module_file_name = module + '.txt'
+        user_repo_path = repo_path_for_user(ADMIN)
+        sys_file = os.path.join(user_repo_path, sys_msg_dir, module_file_name)
+        
+        if Path(sys_file).is_file():
+            with open(sys_file, 'r') as sys_file: 
+                sys_msg = sys_file.read()
+        
+        return sys_msg     
+    except TypeError:
+        logger.error("Set the system message before proceeding")
+        raise

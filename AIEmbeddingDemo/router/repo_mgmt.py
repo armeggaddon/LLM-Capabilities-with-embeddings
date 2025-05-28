@@ -1,13 +1,13 @@
 import os
 import logging
 from typing import List
-from datetime import datetime
-from fastapi import APIRouter, Request, Form, UploadFile
-from utils.repository import repo_path_for_user, write_system_message,\
-    extract_system_message, file_upload_to_repo
-from utils.constants import embed_files, sys_msg_dir, image_repo, de_embed_files, \
-    ALL_FILES, EMBEDDED_FILES, ADMIN
 from config import CONSTS
+from datetime import datetime
+from fastapi import APIRouter, Request, Form, UploadFile, File
+from utils.repository import repo_path_for_user, file_upload_to_repo
+from utils.support import write_system_message, extract_system_message
+from utils.constants import embed_files, sys_msg_dir, image_repo, de_embed_files, ALL_FILES, EMBEDDED_FILES, ADMIN
+from processor.embedding_workflow import create_data_embedding
 
 logger = logging.getLogger(__name__)
 router = APIRouter()
@@ -65,13 +65,14 @@ def list_items(request:Request, repository: str=Form(..., enum=[ALL_FILES, EMBED
         logger.exception(e)
         return str(e)     
 
+
 @router.post("/setSystemMessage/", summary="Enter the system message to be set", description="""Enter the system message to be set for your usecase,
                                                                                     even though the validations are part of embeddings, system message is used to
                                                                                     pick the correct embeddings(it is a preface to your workflow""")
 async def set_system_message(module:str, sys_msg:str): 
     
     try:
-        output_ = write_system_message('admin', module, sys_msg)
+        output_ = write_system_message(ADMIN, module, sys_msg)
         return output_
     except Exception as e:
         logger.exception(e)

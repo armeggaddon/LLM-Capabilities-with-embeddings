@@ -3,9 +3,8 @@ import logging
 import subprocess
 from config import CONSTS
 from fastapi import FastAPI
-from router import embedding_api
 from utils.support import record_closure
-
+from router import embedding_api,repo_mgmt
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI(title=CONSTS.app_name,
@@ -14,10 +13,11 @@ app = FastAPI(title=CONSTS.app_name,
 logging.setLogRecordFactory(record_closure(None))
 
 app.include_router(embedding_api.router)
+app.include_router(repo_mgmt.router)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origin=["*"],
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
