@@ -64,7 +64,7 @@ LLM-Capabilities-with-embeddings/
     ├── images                # Chatbot Icons
     ├── processor             # core workflow
     ├── router                # REST components
-    ├── utils                 # support packages
+    └── utils                 # support packages
 ```  
    
 ---  
