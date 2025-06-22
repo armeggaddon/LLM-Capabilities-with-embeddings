@@ -50,8 +50,7 @@ Follow these steps to set up the project locally:
    
 ## 📖 Usage  
    
-Refer the [youtube](https://www.youtube.com/watch?v=OwgAvdYUArA) link for end to end demo
-```  
+Refer the [youtube](https://www.youtube.com/watch?v=OwgAvdYUArA) link for end to end demo  
    
 ---  
    
