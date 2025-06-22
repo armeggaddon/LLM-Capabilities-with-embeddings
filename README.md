@@ -43,7 +43,7 @@ Follow these steps to set up the project locally:
 3. **Run the Demo**:  
    Navigate to the `AIEmbeddingDemo` directory and execute the demo script:  
    ```bash  
-   python demo.py  
+   python settings.py  
    ```  
    
 ---  
