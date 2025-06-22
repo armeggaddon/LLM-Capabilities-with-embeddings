@@ -83,13 +83,13 @@ print(response)
 ## 📂 Project Structure  
    
 ```  
-LLM-Capabilities-with-embeddings/  
-├── AIEmbeddingDemo/          # Demo application showcasing the capabilities  
-├── README.md                 # Project documentation  
-├── requirements.txt          # Python dependencies  
-└── src/                      # Core source code  
-    ├── embeddings_module.py  # Embedding-related functionality  
-    └── llm_module.py         # LLM integration  
+LLM-Capabilities-with-embeddings/
+├── README.md                 # Project documentation
+└── AIEmbeddingDemo/          # Core source code  
+    ├── images                # Chatbot Icons
+    ├── processor             # core workflow
+    ├── router                # REST components
+    ├── utils                 # support packages
 ```  
    
 ---  
