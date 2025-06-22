@@ -50,32 +50,7 @@ Follow these steps to set up the project locally:
    
 ## 📖 Usage  
    
-### Example: Semantic Search  
-```python  
-from embeddings_module import EmbeddingModel  
-   
-# Initialize the embedding model  
-model = EmbeddingModel()  
-   
-# Generate embeddings for your text  
-text = "What are the capabilities of LLMs with embeddings?"  
-embedding = model.generate_embedding(text)  
-   
-# Use the embedding for semantic search or other tasks  
-results = model.semantic_search(embedding, corpus)  
-print(results)  
-```  
-   
-### Example: Contextual Understanding  
-```python  
-from llm_module import LLMWithEmbeddings  
-   
-# Initialize the LLM with embeddings  
-llm = LLMWithEmbeddings()  
-   
-# Generate a response with enhanced context  
-response = llm.generate_response("Explain embeddings in simple terms.")  
-print(response)  
+Refer the [youtube](https://www.youtube.com/watch?v=OwgAvdYUArA) link for end to end demo
 ```  
    
 ---  
