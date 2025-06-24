@@ -15,7 +15,7 @@ async def embedding_workflow(request:Request):
     
     user_input = req_payload.get('user_input')
     chat_history = req_payload.get('chat_history')
-    workflow = req_payload.get('workflow','ulti')
+    workflow = req_payload.get('workflow','demo')
     
     final_output = user_workflow(user_input, chat_history, workflow, session_id)
     return  final_output
